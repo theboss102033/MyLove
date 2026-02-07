@@ -29,27 +29,39 @@ body {
              heartbeat 1.2s infinite;
 }
 
-/* PARLAMA */
 @keyframes glow {
-  from {
-    text-shadow: 0 0 10px #ff4d6d,
-                 0 0 20px #ff4d6d,
-                 0 0 30px #ff4d6d;
-  }
-  to {
-    text-shadow: 0 0 20px #ff1f4b,
-                 0 0 40px #ff1f4b,
-                 0 0 60px #ff1f4b;
-  }
+  from { text-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff4d6d; }
+  to { text-shadow: 0 0 20px #ff1f4b, 0 0 40px #ff1f4b; }
 }
 
-/* KALP ATIŞI */
 @keyframes heartbeat {
   0% { transform: scale(1); }
-  25% { transform: scale(1.1); }
-  40% { transform: scale(1); }
-  60% { transform: scale(1.12); }
+  50% { transform: scale(1.12); }
   100% { transform: scale(1); }
+}
+
+/* MÜZİK PANELİ */
+.music-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  padding: 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.music-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: #ff4d6d;
+  color: white;
+  font-size: 20px;
 }
 </style>
 </head>
@@ -70,28 +82,26 @@ justify-content:center;
 color:white;
 z-index:9999;
 ">
-
 <h2>Siteye giriş</h2>
-
 <input id="passwordInput" type="password" placeholder="Şifre"
 style="padding:10px;border-radius:8px;border:none;margin:10px;">
-
-<button onclick="checkPassword()"
-style="padding:10px 20px;border:none;border-radius:8px;">
+<button onclick="checkPassword()" style="padding:10px 20px;border:none;border-radius:8px;">
 Giriş
 </button>
-
 </div>
 
 <h1 class="title">Betül ❤️ Ahmet</h1>
-
 <div id="gallery"></div>
 
-<script>
+<!-- MÜZİK PANELİ -->
+<div class="music-panel">
+  <button id="musicBtn" class="music-btn" onclick="toggleMusic()">▶</button>
+  <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="changeVolume(this.value)">
+</div>
 
+<script>
 function checkPassword() {
   const pass = document.getElementById("passwordInput").value;
-
   if (pass === "Ahmet") {
     document.getElementById("loginScreen").style.display = "none";
   } else {
@@ -113,7 +123,6 @@ async function loadPhotos() {
       img.style.width = "100%";
       img.style.borderRadius = "12px";
       img.style.cursor = "pointer";
-
       img.onclick = () => openLightbox(photo);
       gallery.appendChild(img);
     });
@@ -121,7 +130,6 @@ async function loadPhotos() {
     gallery.innerHTML = "<h2 style='color:white'>Fotoğraflar yüklenemedi</h2>";
   }
 }
-
 loadPhotos();
 
 /* FOTOĞRAF BÜYÜTME */
@@ -152,9 +160,23 @@ function openLightbox(src) {
 const music = document.createElement("audio");
 music.src = "muzik.mp3";
 music.loop = true;
-music.autoplay = true;
 music.volume = 0.5;
 document.body.appendChild(music);
+
+function toggleMusic() {
+  const btn = document.getElementById("musicBtn");
+  if (music.paused) {
+    music.play();
+    btn.innerText = "⏸";
+  } else {
+    music.pause();
+    btn.innerText = "▶";
+  }
+}
+
+function changeVolume(val) {
+  music.volume = val;
+}
 
 /* KALP ANİMASYONU */
 function createHeart() {
@@ -168,25 +190,15 @@ function createHeart() {
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 4000);
 }
-
 setInterval(createHeart, 500);
 
 const style = document.createElement("style");
 style.innerHTML = `
 @keyframes floatUp {
-  to {
-    transform: translateY(-110vh);
-    opacity: 0;
-  }
+  to { transform: translateY(-110vh); opacity: 0; }
 }`;
 document.head.appendChild(style);
-
 </script>
-
-<button onclick="music.play()" 
-style="position:fixed;top:20px;right:20px;padding:10px;border-radius:12px;">
-🎵 Müzik
-</button>
 
 </body>
 </html>
