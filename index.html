@@ -18,6 +18,14 @@ body {
   gap: 10px;
   padding: 10px;
 }
+
+.title {
+  text-align:center;
+  font-size:32px;
+  color:#ff4d6d;
+  margin:15px;
+  font-family:cursive;
+}
 </style>
 </head>
 
@@ -49,20 +57,14 @@ Giriş
 </button>
 
 </div>
-  
+
+<h1 class="title">Betül ❤️ Ahmet</h1>
+
 <div id="gallery"></div>
 
 <script>
 
-  function checkPassword() {
-  const pass = document.getElementById("passwordInput").value;
-
-  if (pass === "Ahmet") {
-    document.getElementById("loginScreen").style.display = "none";
-  } else {
-    alert("Yanlış şifre");
-  }
-}function checkPassword() {
+function checkPassword() {
   const pass = document.getElementById("passwordInput").value;
 
   if (pass === "Ahmet") {
@@ -71,6 +73,7 @@ Giriş
     alert("Yanlış şifre");
   }
 }
+
 const gallery = document.getElementById("gallery");
 
 /* FOTOĞRAFLARI YÜKLE */
@@ -152,9 +155,10 @@ style.innerHTML = `
   }
 }`;
 document.head.appendChild(style);
+
 </script>
 
-  <button onclick="music.play()" 
+<button onclick="music.play()" 
 style="position:fixed;top:20px;right:20px;padding:10px;border-radius:12px;">
 🎵 Müzik
 </button>
