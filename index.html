@@ -20,11 +20,36 @@ body {
 }
 
 .title {
-  text-align:center;
-  font-size:32px;
-  color:#ff4d6d;
-  margin:15px;
-  font-family:cursive;
+  text-align: center;
+  font-size: 52px;
+  margin: 20px;
+  font-family: cursive;
+  color: #ff4d6d;
+  animation: glow 1.5s ease-in-out infinite alternate,
+             heartbeat 1.2s infinite;
+}
+
+/* PARLAMA */
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #ff4d6d,
+                 0 0 20px #ff4d6d,
+                 0 0 30px #ff4d6d;
+  }
+  to {
+    text-shadow: 0 0 20px #ff1f4b,
+                 0 0 40px #ff1f4b,
+                 0 0 60px #ff1f4b;
+  }
+}
+
+/* KALP ATIŞI */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); }
 }
 </style>
 </head>
