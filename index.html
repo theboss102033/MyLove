@@ -1,23 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyLove</title>
+
+<style>
+body {
+  margin: 0;
+  background: #111;
+  font-family: Arial;
+}
+
+#gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="gallery"></div>
+
 <script>
 const gallery = document.getElementById("gallery");
 
 /* FOTOĞRAFLARI YÜKLE */
 async function loadPhotos() {
-  const response = await fetch("./photos.json");
-  const photos = await response.json();
+  try {
+    const response = await fetch("./photos.json");
+    const photos = await response.json();
 
-  photos.forEach(photo => {
-    const img = document.createElement("img");
-    img.src = photo;
-    img.style.width = "100%";
-    img.style.borderRadius = "12px";
-    img.style.marginBottom = "10px";
-    img.style.cursor = "pointer";
+    photos.forEach(photo => {
+      const img = document.createElement("img");
+      img.src = photo;
+      img.style.width = "100%";
+      img.style.borderRadius = "12px";
+      img.style.cursor = "pointer";
 
-    img.onclick = () => openLightbox(photo);
-
-    gallery.appendChild(img);
-  });
+      img.onclick = () => openLightbox(photo);
+      gallery.appendChild(img);
+    });
+  } catch(e) {
+    gallery.innerHTML = "<h2 style='color:white'>Fotoğraflar yüklenemedi</h2>";
+  }
 }
 
 loadPhotos();
@@ -42,12 +71,11 @@ function openLightbox(src) {
   img.style.borderRadius = "16px";
 
   overlay.onclick = () => overlay.remove();
-
   overlay.appendChild(img);
   document.body.appendChild(overlay);
 }
 
-/* ARKA PLAN MÜZİK */
+/* MÜZİK */
 const music = document.createElement("audio");
 music.src = "muzik.mp3";
 music.loop = true;
@@ -65,7 +93,6 @@ function createHeart() {
   heart.style.fontSize = "24px";
   heart.style.animation = "floatUp 4s linear";
   document.body.appendChild(heart);
-
   setTimeout(() => heart.remove(), 4000);
 }
 
@@ -81,3 +108,6 @@ style.innerHTML = `
 }`;
 document.head.appendChild(style);
 </script>
+
+</body>
+</html>
