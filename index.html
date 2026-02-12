@@ -6,184 +6,190 @@
 <title>Betül ❤️ Ahmet</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(#020111, #000);
-  color: white;
-  overflow-x: hidden;
+body{
+  margin:0;
+  font-family:Arial;
+  background:#000;
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
 }
 
-/* YILDIZLI ARKA PLAN */
-.stars {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: url("https://www.transparenttextures.com/patterns/stardust.png");
-  animation: moveStars 120s linear infinite;
-  opacity: 0.4;
+/* YILDIZ */
+#stars{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
 }
 
-@keyframes moveStars {
-  from { background-position: 0 0; }
-  to { background-position: 10000px 5000px; }
+/* INTRO */
+#intro{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:9999;
 }
 
-/* BAŞLIK */
-.title {
-  text-align: center;
-  font-size: 56px;
-  margin-top: 40px;
-  color: #ff4d6d;
-  animation: glow 1.5s infinite alternate,
-             heartbeat 1.2s infinite;
+.intro-heart{
+  font-size:90px;
+  color:#ff4d6d;
+  animation:beat 2s forwards;
 }
 
-/* NEON PARLAMA */
-@keyframes glow {
-  from {
-    text-shadow: 0 0 10px #ff4d6d,
-                 0 0 20px #ff4d6d,
-                 0 0 30px #ff4d6d;
-  }
-  to {
-    text-shadow: 0 0 20px #ff1f4b,
-                 0 0 40px #ff1f4b,
-                 0 0 60px #ff1f4b,
-                 0 0 80px #ff1f4b;
-  }
+@keyframes beat{
+  0%{transform:scale(.3);opacity:0;}
+  40%{transform:scale(1.2);opacity:1;}
+  70%{transform:scale(1);}
+  100%{transform:scale(15);opacity:0;}
 }
 
-/* KALP NABZI */
-@keyframes heartbeat {
-  0% { transform: scale(1); }
-  20% { transform: scale(1.1); }
-  40% { transform: scale(1.25); }
-  60% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+.title{
+  font-size:40px;
+  margin-top:30px;
+  color:#ff4d6d;
+  font-family:cursive;
 }
 
-/* HOŞ GELDİN */
-.subtitle {
-  text-align: center;
-  font-size: 26px;
-  margin-top: 10px;
-  opacity: 0.9;
+.date{
+  font-size:18px;
+  margin-top:5px;
 }
 
-/* TARİH */
-.date {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 18px;
-  opacity: 0.7;
+.love-box{
+  margin:25px auto;
+  padding:15px;
+  width:85%;
+  max-width:320px;
+  background:rgba(255,77,109,0.15);
+  border-radius:20px;
 }
 
-/* FLOATING HEARTS */
-.heart {
-  position: fixed;
-  bottom: -10px;
-  font-size: 20px;
-  animation: floatUp 6s linear forwards;
+.counter{
+  margin-top:10px;
+  font-size:18px;
+  color:#ff4d6d;
+  font-weight:bold;
 }
 
-@keyframes floatUp {
-  to {
-    transform: translateY(-110vh);
-    opacity: 0;
-  }
-}
-
-/* MESAJ BÖLÜMÜ */
-.chat {
-  max-width: 420px;
-  margin: 40px auto;
-  background: rgba(255,255,255,0.08);
-  padding: 15px;
-  border-radius: 20px;
-  backdrop-filter: blur(6px);
-}
-
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border-radius: 10px;
-  border: none;
-}
-
-button {
-  background: #ff4d6d;
-  color: white;
-  font-weight: bold;
-}
-
-.message {
-  background: rgba(255,255,255,0.15);
-  padding: 8px;
-  border-radius: 10px;
-  margin-top: 6px;
-  font-size: 14px;
+.music-btn{
+  margin-top:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:none;
+  background:#ff4d6d;
+  color:white;
+  font-size:22px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="stars"></div>
+<canvas id="stars"></canvas>
 
-<h1 class="title">Betül ❤️ Ahmet</h1>
-<div class="subtitle">Hoş geldin Betül ❤️</div>
-<div class="date">25.12.2025</div>
-
-<div class="chat">
-  <input id="name" placeholder="İsim (Betül veya Ahmet)">
-  <input id="msg" placeholder="Mesaj yaz...">
-  <button onclick="addMsg()">Gönder</button>
-  <div id="messages"></div>
+<div id="intro">
+  <div class="intro-heart">❤</div>
+  <h2>Betül ❤️ Ahmet</h2>
+  <p>Hoş geldin Betül ❤️</p>
 </div>
 
+<div class="title">Betül ❤️ Ahmet</div>
+<div class="date">25.12.2025</div>
+
+<div class="love-box">
+  <div>Birlikte geçen süre</div>
+  <div id="counter" class="counter"></div>
+</div>
+
+<button class="music-btn" onclick="toggleMusic()">▶</button>
+
 <script>
-/* FLOATING HEARTS */
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-  document.body.appendChild(heart);
+/* INTRO KAPAT */
+window.addEventListener("load",()=>{
+  setTimeout(()=>{
+    document.getElementById("intro").style.display="none";
+  },2000);
+});
 
-  setTimeout(() => heart.remove(), 6000);
-}, 400);
+/* SAYAÇ */
+function updateCounter(){
+  const start=new Date("2025-12-25");
+  const diff=new Date()-start;
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  const s=Math.floor(diff/1000)%60;
+  document.getElementById("counter").innerText=
+  d+" gün "+h+" saat "+m+" dk "+s+" sn ❤️";
+}
+setInterval(updateCounter,1000);
+updateCounter();
 
-/* MESAJ EKLEME */
-function addMsg(){
-  const name = document.getElementById("name").value;
-  const msg = document.getElementById("msg").value;
+/* MÜZİK */
+const music=new Audio("muzik.mp3");
+music.loop=true;
 
-  if(name !== "Betül" && name !== "Ahmet"){
-    alert("Sadece Betül ve Ahmet yazabilir ❤️");
-    return;
+function toggleMusic(){
+  const btn=document.querySelector(".music-btn");
+  if(music.paused){
+    music.play();
+    btn.innerText="⏸";
+  }else{
+    music.pause();
+    btn.innerText="▶";
   }
-
-  const div = document.createElement("div");
-  div.className = "message";
-
-  const now = new Date();
-  div.innerHTML = "<b>" + name + "</b>: " + msg +
-                  "<br><small>" +
-                  now.toLocaleString() +
-                  "</small>";
-
-  document.getElementById("messages").appendChild(div);
-  document.getElementById("msg").value="";
 }
 
-/* ŞİFRE 1010 */
-const pass = prompt("Şifre gir:");
-if(pass !== "1010"){
-  document.body.innerHTML = "<h1 style='text-align:center;margin-top:50px;'>Erişim reddedildi</h1>";
+/* YILDIZ */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
 }
+resize();
+window.addEventListener("resize",resize);
+
+let stars=[];
+for(let i=0;i<150;i++){
+  stars.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*1.5,
+    d:Math.random()*0.4
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  ctx.beginPath();
+  stars.forEach(s=>{
+    ctx.moveTo(s.x,s.y);
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2,true);
+  });
+  ctx.fill();
+  stars.forEach(s=>{
+    s.y+=s.d;
+    if(s.y>canvas.height){
+      s.y=0;
+      s.x=Math.random()*canvas.width;
+    }
+  });
+}
+setInterval(draw,33);
 </script>
 
 </body>
