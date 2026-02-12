@@ -58,6 +58,7 @@ body{
   margin-top:30px;
   color:#ff4d6d;
   font-family:cursive;
+  text-shadow:0 0 15px #ff4d6d;
 }
 
 .date{
@@ -81,8 +82,30 @@ body{
   font-weight:bold;
 }
 
+/* GALERİ */
+#gallery{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:15px;
+}
+
+#gallery img{
+  width:100%;
+  border-radius:15px;
+  box-shadow:0 0 15px #ff4d6d;
+  transition:.4s;
+}
+
+#gallery img:hover{
+  transform:scale(1.05);
+}
+
+/* MÜZİK BUTON */
 .music-btn{
-  margin-top:20px;
+  position:fixed;
+  bottom:20px;
+  right:20px;
   width:60px;
   height:60px;
   border-radius:50%;
@@ -95,6 +118,15 @@ body{
 </head>
 
 <body>
+
+<script>
+/* ŞİFRE */
+const password = prompt("Şifre gir:");
+if(password !== "1010"){
+  document.body.innerHTML="<h1 style='margin-top:50px'>Erişim reddedildi</h1>";
+  throw new Error("Wrong password");
+}
+</script>
 
 <canvas id="stars"></canvas>
 
@@ -112,10 +144,12 @@ body{
   <div id="counter" class="counter"></div>
 </div>
 
+<div id="gallery"></div>
+
 <button class="music-btn" onclick="toggleMusic()">▶</button>
 
 <script>
-/* INTRO KAPAT */
+/* INTRO */
 window.addEventListener("load",()=>{
   setTimeout(()=>{
     document.getElementById("intro").style.display="none";
@@ -150,6 +184,50 @@ function toggleMusic(){
     btn.innerText="▶";
   }
 }
+
+/* FOTOĞRAF LİSTESİ (EKRAN GÖRÜNTÜSÜNE GÖRE TAM) */
+const photos=[
+"IMG-20260107-WA0016.jpg",
+"IMG-20260107-WA0017.jpg",
+"IMG-20260112-WA0006.jpg",
+"IMG-20260112-WA0008.jpg",
+"IMG-20260112-WA0009.jpg",
+"IMG-20260112-WA0010.jpg",
+"IMG-20260112-WA0011.jpg",
+"IMG-20260112-WA0012.jpg",
+"IMG-20260112-WA0013.jpg",
+"IMG-20260112-WA0014.jpg",
+"IMG-20260112-WA0015.jpg",
+"IMG-20260112-WA0038.jpg",
+"IMG-20260129-WA0043.jpg",
+"IMG-20260129-WA0044.jpg",
+"IMG-20260129-WA0045.jpg",
+"IMG-20260129-WA0046.jpg",
+"IMG-20260129-WA0047.jpg",
+"IMG-20260129-WA0048.jpg"
+];
+
+const gallery=document.getElementById("gallery");
+
+photos.forEach(src=>{
+  const img=document.createElement("img");
+  img.src=src;
+
+  img.onclick=()=>{
+    const overlay=document.createElement("div");
+    overlay.style.cssText=
+    "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;";
+    const big=document.createElement("img");
+    big.src=src;
+    big.style.maxWidth="90%";
+    big.style.borderRadius="15px";
+    overlay.onclick=()=>overlay.remove();
+    overlay.appendChild(big);
+    document.body.appendChild(overlay);
+  };
+
+  gallery.appendChild(img);
+});
 
 /* YILDIZ */
 const canvas=document.getElementById("stars");
