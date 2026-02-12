@@ -1,272 +1,281 @@
-<!DOCTYPE html>  <html lang="tr">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>MyLove</title>  <style>  
-body {  
-  margin: 0;  
-  background: #111;  
-  font-family: Arial;  
-}  
-  
-/* YILDIZ CANVAS */  
-#stars {  
-  position: fixed;  
-  top: 0;  
-  left: 0;  
-  width: 100%;  
-  height: 100%;  
-  z-index: -1;  
-}  
-  
-/* AÇILIŞ EKRANI */  
-#intro {  
-  position: fixed;  
-  top: 0;  
-  left: 0;  
-  width: 100%;  
-  height: 100%;  
-  background: #000;  
-  display: flex;  
-  align-items: center;  
-  justify-content: center;  
-  z-index: 20000;  
-}  
-  
-.intro-content { text-align: center; }  
-  
-.intro-heart {  
-  font-size: 90px;  
-  color: #ff4d6d;  
-  animation: introBeat 2.2s ease-in-out forwards;  
-}  
-  
-.intro-title {  
-  color: white;  
-  font-size: 28px;  
-  margin-top: 10px;  
-  font-family: cursive;  
-}  
-  
-.intro-sub {  
-  color: #ff4d6d;  
-  font-size: 18px;  
-  margin-top: 6px;  
-}  
-  
-@keyframes introBeat {  
-  0% { transform: scale(0.3); opacity: 0; }  
-  40% { transform: scale(1.2); opacity: 1; }  
-  70% { transform: scale(1); }  
-  100% { transform: scale(18); opacity: 0; }  
-}  
-  
-/* GALERİ */  
-#gallery {  
-  display: grid;  
-  grid-template-columns: 1fr 1fr;  
-  gap: 10px;  
-  padding: 10px;  
-}  
-  
-.title {  
-  text-align: center;  
-  font-size: 52px;  
-  margin: 20px;  
-  font-family: cursive;  
-  color: #ff4d6d;  
-  animation: glow 1.5s ease-in-out infinite alternate,  
-             heartbeat 1.2s infinite;  
-}  
-  
-@keyframes glow {  
-  from { text-shadow: 0 0 10px #ff4d6d; }  
-  to { text-shadow: 0 0 40px #ff1f4b; }  
-}  
-  
-@keyframes heartbeat {  
-  0% { transform: scale(1); }  
-  50% { transform: scale(1.12); }  
-  100% { transform: scale(1); }  
-}  
-  
-.love-card {  
-  text-align:center;  
-  margin:10px auto 20px auto;  
-  padding:15px;  
-  width:80%;  
-  max-width:320px;  
-  background:rgba(255,77,109,0.15);  
-  border-radius:20px;  
-  color:white;  
-  backdrop-filter:blur(8px);  
-}  
-  
-.love-timer {  
-  font-size:20px;  
-  margin-top:5px;  
-  color:#ff4d6d;  
-  font-weight:bold;  
-}  
-  
-/* MÜZİK PANELİ */  
-.music-panel {  
-  position: fixed;  
-  bottom: 20px;  
-  right: 20px;  
-  background: rgba(0,0,0,0.6);  
-  backdrop-filter: blur(10px);  
-  padding: 12px;  
-  border-radius: 20px;  
-  display: flex;  
-  align-items: center;  
-  gap: 10px;  
-}  
-  
-.music-btn {  
-  width: 50px;  
-  height: 50px;  
-  border-radius: 50%;  
-  border: none;  
-  background: #ff4d6d;  
-  color: white;  
-  font-size: 20px;  
-}  
-</style>  </head>  <body>  <canvas id="stars"></canvas>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyLove</title>
 
-<div id="intro">  
-  <div class="intro-content">  
-    <div class="intro-heart">❤</div>  
-    <div class="intro-title">Betül ❤️ Ahmet</div>  
-    <div class="intro-sub">Hoş geldin Betül ❤️</div>  
-  </div>  
-</div>  <h1 class="title">  
-Betül ❤️ Ahmet  
-<div style="font-size:20px;margin-top:8px;">25.12.2025</div>  
-</h1>  <div class="love-card">  
-  <div>Birlikte geçen süre</div>  
-  <div id="counter" class="love-timer"></div>  
-</div>  <div id="gallery"></div>  <div class="music-panel">  
-  <button id="musicBtn" class="music-btn" onclick="toggleMusic()">▶</button>  
-  <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="changeVolume(this.value)">  
-</div>  <script>  
-window.addEventListener("load", () => {  
-  setTimeout(() => {  
-    document.getElementById("intro").style.display = "none";  
-  }, 2200);  
-});  
-  
-/* FOTOĞRAFLAR */  
-const gallery = document.getElementById("gallery");  
-async function loadPhotos() {  
-  const response = await fetch("./photos.json");  
-  const photos = await response.json();  
-  photos.forEach(photo => {  
-    const img = document.createElement("img");  
-    img.src = photo;  
-    img.style.width = "100%";  
-    img.style.borderRadius = "12px";  
-    img.onclick = () => openLightbox(photo);  
-    gallery.appendChild(img);  
-  });  
-}  
-loadPhotos();  
-  
-function openLightbox(src) {  
-  const overlay = document.createElement("div");  
-  overlay.style.cssText =  
-    "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;";  
-  const img = document.createElement("img");  
-  img.src = src;  
-  img.style.maxWidth = "90%";  
-  img.style.borderRadius = "16px";  
-  overlay.onclick = () => overlay.remove();  
-  overlay.appendChild(img);  
-  document.body.appendChild(overlay);  
-}  
-  
-/* MÜZİK */  
-const music = document.createElement("audio");  
-music.src = "muzik.mp3";  
-music.loop = true;  
-music.volume = 0.5;  
-document.body.appendChild(music);  
-  
-function toggleMusic() {  
-  const btn = document.getElementById("musicBtn");  
-  if (music.paused) {  
-    music.play();  
-    btn.innerText = "⏸";  
-  } else {  
-    music.pause();  
-    btn.innerText = "▶";  
-  }  
-}  
-function changeVolume(val) { music.volume = val; }  
-  
-/* SAYAÇ */  
-function updateCounter() {  
-  const startDate = new Date("2025-12-25");  
-  const diff = new Date() - startDate;  
-  const d = Math.floor(diff / 86400000);  
-  const h = Math.floor(diff / 3600000) % 24;  
-  const m = Math.floor(diff / 60000) % 60;  
-  const s = Math.floor(diff / 1000) % 60;  
-  document.getElementById("counter").innerText =  
-    `${d} gün ${h} saat ${m} dk ${s} sn ❤️`;  
-}  
-setInterval(updateCounter, 1000);  
-updateCounter();  
-  
-/* KALPLER */  
-setInterval(() => {  
-  const heart = document.createElement("div");  
-  heart.innerHTML = "❤";  
-  heart.style.cssText =  
-    "position:fixed;left:"+Math.random()*100+"vw;bottom:-20px;font-size:24px;animation:floatUp 4s linear;";  
-  document.body.appendChild(heart);  
-  setTimeout(()=>heart.remove(),4000);  
-}, 500);  
-  
-const style = document.createElement("style");  
-style.innerHTML = "@keyframes floatUp{to{transform:translateY(-110vh);opacity:0;}}";  
-document.head.appendChild(style);  
-  
-/* YILDIZLI GECE */  
-const canvas = document.getElementById("stars");  
-const ctx = canvas.getContext("2d");  
-  
-function resizeCanvas(){  
-  canvas.width = window.innerWidth;  
-  canvas.height = window.innerHeight;  
-}  
-resizeCanvas();  
-window.addEventListener("resize", resizeCanvas);  
-  
-let stars = [];  
-for (let i=0;i<140;i++){  
-  stars.push({  
-    x:Math.random()*canvas.width,  
-    y:Math.random()*canvas.height,  
-    r:Math.random()*1.5,  
-    d:Math.random()*0.4  
-  });  
-}  
-  
-function drawStars(){  
-  ctx.clearRect(0,0,canvas.width,canvas.height);  
-  ctx.fillStyle="white";  
-  ctx.beginPath();  
-  stars.forEach(s=>{  
-    ctx.moveTo(s.x,s.y);  
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2,true);  
-  });  
-  ctx.fill();  
-  stars.forEach(s=>{  
-    s.y+=s.d;  
-    if(s.y>canvas.height){ s.y=0; s.x=Math.random()*canvas.width; }  
-  });  
-}  
-setInterval(drawStars,33);  
-</script>  </body>  
+<style>
+body {
+  margin: 0;
+  background: #111;
+  font-family: Arial;
+}
+
+/* ŞİFRE EKRANI */
+#loginScreen{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  z-index:30000;
+}
+
+#loginScreen input{
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+#loginScreen button{
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+  background:#ff4d6d;
+  color:white;
+}
+
+/* YILDIZ CANVAS */
+#stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* AÇILIŞ EKRANI */
+#intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+}
+
+.intro-content { text-align: center; }
+
+.intro-heart {
+  font-size: 90px;
+  color: #ff4d6d;
+  animation: introBeat 2.2s ease-in-out forwards;
+}
+
+.intro-title {
+  color: white;
+  font-size: 28px;
+  margin-top: 10px;
+  font-family: cursive;
+}
+
+.intro-sub {
+  color: #ff4d6d;
+  font-size: 18px;
+  margin-top: 6px;
+}
+
+@keyframes introBeat {
+  0% { transform: scale(0.3); opacity: 0; }
+  40% { transform: scale(1.2); opacity: 1; }
+  70% { transform: scale(1); }
+  100% { transform: scale(18); opacity: 0; }
+}
+
+#gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+.title {
+  text-align: center;
+  font-size: 52px;
+  margin: 20px;
+  font-family: cursive;
+  color: #ff4d6d;
+}
+
+.love-card {
+  text-align:center;
+  margin:10px auto 20px auto;
+  padding:15px;
+  width:80%;
+  max-width:320px;
+  background:rgba(255,77,109,0.15);
+  border-radius:20px;
+  color:white;
+}
+
+.music-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.6);
+  padding: 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.music-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: #ff4d6d;
+  color: white;
+  font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ŞİFRE -->
+<div id="loginScreen">
+  <h2>Siteye giriş</h2>
+  <input id="passwordInput" type="password" placeholder="Şifre">
+  <button onclick="checkPassword()">Giriş</button>
+</div>
+
+<canvas id="stars"></canvas>
+
+<div id="intro">
+  <div class="intro-content">
+    <div class="intro-heart">❤</div>
+    <div class="intro-title">Betül ❤️ Ahmet</div>
+    <div class="intro-sub">Hoş geldin Betül ❤️</div>
+  </div>
+</div>
+
+<h1 class="title">
+Betül ❤️ Ahmet
+<div style="font-size:20px;margin-top:8px;">25.12.2025</div>
+</h1>
+
+<div class="love-card">
+  <div>Birlikte geçen süre</div>
+  <div id="counter"></div>
+</div>
+
+<div id="gallery"></div>
+
+<div class="music-panel">
+  <button id="musicBtn" class="music-btn" onclick="toggleMusic()">▶</button>
+  <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="changeVolume(this.value)">
+</div>
+
+<script>
+/* ŞİFRE */
+function checkPassword(){
+  const pass=document.getElementById("passwordInput").value;
+  if(pass==="1010"){
+    document.getElementById("loginScreen").style.display="none";
+  }else{
+    alert("Yanlış şifre");
+  }
+}
+
+/* INTRO */
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("intro").style.display = "none";
+  }, 2200);
+});
+
+/* FOTOĞRAFLAR */
+const gallery = document.getElementById("gallery");
+async function loadPhotos() {
+  try{
+    const response = await fetch("./photos.json");
+    const photos = await response.json();
+    photos.forEach(photo => {
+      const img = document.createElement("img");
+      img.src = photo;
+      img.style.width = "100%";
+      img.style.borderRadius = "12px";
+      img.onclick = () => openLightbox(photo);
+      gallery.appendChild(img);
+    });
+  }catch{}
+}
+loadPhotos();
+
+function openLightbox(src){
+  const overlay=document.createElement("div");
+  overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;";
+  const img=document.createElement("img");
+  img.src=src;
+  img.style.maxWidth="90%";
+  overlay.onclick=()=>overlay.remove();
+  overlay.appendChild(img);
+  document.body.appendChild(overlay);
+}
+
+/* MÜZİK */
+const music=new Audio("muzik.mp3");
+music.loop=true;
+music.volume=0.5;
+
+function toggleMusic(){
+  const btn=document.getElementById("musicBtn");
+  if(music.paused){
+    music.play();
+    btn.innerText="⏸";
+  }else{
+    music.pause();
+    btn.innerText="▶";
+  }
+}
+function changeVolume(v){ music.volume=v; }
+
+/* SAYAÇ */
+function updateCounter(){
+  const startDate=new Date("2025-12-25");
+  const diff=new Date()-startDate;
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  const s=Math.floor(diff/1000)%60;
+  document.getElementById("counter").innerText=
+  `${d} gün ${h} saat ${m} dk ${s} sn ❤️`;
+}
+setInterval(updateCounter,1000);
+updateCounter();
+
+/* YILDIZ */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+resize();window.addEventListener("resize",resize);
+let stars=[...Array(140)].map(()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5,d:Math.random()*0.4}));
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="white";
+ctx.beginPath();
+stars.forEach(s=>{ctx.moveTo(s.x,s.y);ctx.arc(s.x,s.y,s.r,0,Math.PI*2);});
+ctx.fill();
+stars.forEach(s=>{s.y+=s.d;if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;}});
+}
+setInterval(draw,33);
+</script>
+
+</body>
 </html>
